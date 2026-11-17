@@ -1,0 +1,88 @@
+:root {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #17302e;
+  background: #f7f9f5;
+  line-height: 1.5;
+  --ink: #17302e;
+  --muted: #516862;
+  --line: #cfdbd0;
+  --forest: #102e2b;
+  --mint: #c6f2a7;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+h1, h2, p { margin: 0; }
+a { color: inherit; text-underline-offset: .2em; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid #2d8a73; outline-offset: 3px; }
+.wrap { width: min(72rem, calc(100% - 3rem)); margin-inline: auto; }
+.masthead { background: var(--forest); color: #f7fff5; border-bottom: 1px solid #36534a; }
+.wordmark { min-height: 4rem; display: flex; align-items: center; gap: .8rem; font-weight: 680; }
+.brand-mark { display: inline-flex; align-items: center; gap: .2rem; }
+.brand-mark i { width: .32rem; height: .9rem; border-radius: .25rem; background: var(--mint); }
+.brand-mark i:nth-child(2) { height: 1.35rem; }
+.hero { background: var(--forest); color: #f7fff5; border-bottom: .35rem solid var(--mint); }
+.hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .8fr);
+  gap: 2rem;
+  align-items: end;
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+}
+h1 { font: 400 clamp(2.7rem, 6vw, 5.3rem)/.99 Georgia, serif; letter-spacing: -.05em; }
+.hero p { margin-top: 1rem; color: #bccec6; }
+.hero label { display: block; margin-bottom: .45rem; font-weight: 600; }
+.search-row { display: flex; gap: .55rem; }
+.search-row input {
+  width: 100%; min-width: 0; min-height: 3rem;
+  border: 1px solid #9bb5a8; border-radius: .45rem;
+  padding-inline: .8rem; background: #f7fff5; color: var(--ink);
+}
+.primary {
+  min-height: 3rem; padding-inline: 1.15rem; font-weight: 700;
+  border: 1px solid transparent; border-radius: .45rem; background: var(--mint); color: var(--forest);
+}
+.primary:hover { background: #dbffc2; }
+.primary[aria-disabled="true"] { cursor: wait; opacity: .75; }
+.content { padding-block: 2.25rem; min-height: 13rem; }
+.result-heading {
+  border-bottom: 1px solid var(--line); padding-bottom: 1rem;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: .8rem;
+}
+h2 { font: 400 clamp(1.9rem, 4vw, 2.65rem)/1.1 Georgia, serif; overflow-wrap: anywhere; }
+.handle { display: inline-block; margin-bottom: .35rem; color: #28614d; font-weight: 650; overflow-wrap: anywhere; }
+.count, time, .action { color: var(--muted); font-size: .875rem; }
+.timeline { list-style: none; padding: 0; margin: .45rem 0 0; }
+.event {
+  position: relative;
+  display: grid; grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+  align-items: start; gap: .55rem;
+  padding-block: .76rem;
+  border-bottom: 1px solid var(--line);
+}
+.event::before { content: ""; position: absolute; inset: 0 auto 0 .51rem; border-left: 1px solid #b4c8b9; }
+.marker {
+  position: relative; margin-top: .26rem;
+  border: .2rem solid #f7f9f5; border-radius: 50%; width: 1.1rem; height: 1.1rem; background: #687c73;
+}
+.event[data-kind="PushEvent"] .marker { background: #207f60; }
+.event[data-kind^="PullRequest"] .marker { background: #765bb0; }
+.event[data-kind^="Issue"] .marker { background: #a5532f; }
+.event-content { overflow-wrap: anywhere; }
+.action { margin-inline-start: .55em; }
+.event-repo { display: block; width: fit-content; color: #28614d; font-size: .9rem; }
+time { padding-top: .1rem; font-variant-numeric: tabular-nums; }
+.notice { padding: 1rem 0; color: var(--muted); }
+.error { color: #9a3826; }
+.footer {
+  border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: .5rem 1.25rem;
+  padding-block: 1.2rem 2rem; color: var(--muted); font-size: .85rem;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 42rem) {
+  .wrap { width: calc(100% - 2rem); }
+  .hero-layout { grid-template-columns: minmax(0, 1fr); gap: 1.55rem; }
+  .event { grid-template-columns: 1.25rem minmax(0, 1fr); gap: .25rem .55rem; }
+  .event time { grid-column: 2; }
+}
