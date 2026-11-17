@@ -2,6 +2,8 @@
 
 Visor de actividad pública reciente de GitHub con una CLI en Python y una demo estática en React, TypeScript y Vite. Inspirado en [GitHub User Activity de roadmap.sh](https://roadmap.sh/projects/github-user-activity).
 
+[Abre la demo en GitHub Pages](https://humiumii.github.io/github-activity/).
+
 ![Bitácora GitHub mostrando los eventos de Humiumii en bifurca con el filtro Release](docs/activity.png)
 
 ## CLI
@@ -42,12 +44,6 @@ Publica el contenido de `web/dist/` en cualquier alojamiento estático. En GitHu
 - GitHub limita la línea de tiempo a 300 eventos de los últimos 30 días y documenta una latencia de 30 segundos a 6 horas. El feed contiene eventos públicos y puede tardar en reflejar acciones recientes. [Documentación de eventos](https://docs.github.com/en/rest/activity/events)
 - El navegador consulta la API directamente mediante CORS. La cuota primaria sin autenticación es de 60 solicitudes por hora por IP y GitHub también puede aplicar límites secundarios. La demo funciona sin servidor propio ni token. [CORS](https://docs.github.com/en/rest/using-the-rest-api/using-cors-and-jsonp-to-make-cross-origin-requests) · [Límites de la API REST](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 
-## Publicar el repositorio
+## Despliegue en GitHub Pages
 
-Crea un repositorio vacío en GitHub y conecta su URL desde la raíz de este proyecto.
-
-```sh
-git remote add origin https://github.com/Humiumii/github-activity.git
-git push -u origin main
-git push origin v0.1.0
-```
+El workflow `.github/workflows/pages.yml` compila y publica la demo desde `main`. En la configuración del repositorio, Pages usa GitHub Actions como fuente.
