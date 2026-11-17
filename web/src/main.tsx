@@ -33,6 +33,28 @@ function Timeline({ events }: { events: GitHubEvent[] }) {
 }
 
 function Results({ username, events }: { username: string; events: GitHubEvent[] }) {
+  const [repository, setRepository] = useState('')
+  const [type, setType] = useState('')
+
+  const repositories = new Map<string, GitHubEvent[]>()
+  for (const event of events) {
+    const name = event.repo.name
+    const group = repositories.get(name)
+    if (group) group.push(event)
+    else repositories.set(name, [event])
+  }
+
+  const scope = repositories.get(repository) ?? events
+  const types = [...new Set(scope.map(event => event.type))]
+    .sort((a, b) => eventLabel(a).localeCompare(eventLabel(b), 'es'))
+  const filtered = type ? scope.filter(event => event.type === type) : scope
+
+  function selectRepository(name: string) {
+    if (name === repository) return
+    setRepository(name)
+    setType('')
+  }
+
   return (
     <section className="results" aria-labelledby="activity-title">
       <header className="result-heading">
@@ -40,9 +62,44 @@ function Results({ username, events }: { username: string; events: GitHubEvent[]
           <a className="handle" href={'https://github.com/' + encodeURIComponent(username)}>@{username}</a>
           <h2 id="activity-title">Línea de tiempo</h2>
         </div>
-        <span className="count">{events.length} {events.length === 1 ? 'evento' : 'eventos'}</span>
+        <span className="count">{events.length} {events.length === 1 ? 'evento' : 'eventos'} · {repositories.size} {repositories.size === 1 ? 'repositorio' : 'repositorios'}</span>
       </header>
-      {events.length ? <Timeline events={events} /> : <p className="notice">Sin actividad pública reciente.</p>}
+      {events.length === 0 ? <p className="notice">Sin actividad pública reciente.</p> : (
+        <div className="results-layout">
+          <nav className="repositories" aria-labelledby="repos-title">
+            <h3 id="repos-title">Repositorios</h3>
+            <ul role="list">
+              {['', ...repositories.keys()].map(name => (
+                <li key={name}>
+                  <button type="button" aria-pressed={repository === name} aria-controls="repository-timeline"
+                    onClick={() => selectRepository(name)}>
+                    <span>{name || 'Todos los repositorios'}</span>
+                    <span className="repo-count">{repositories.get(name)?.length ?? events.length}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <section id="repository-timeline" className="feed" aria-labelledby="feed-title">
+            <div className="feed-toolbar">
+              <div>
+                <h3 id="feed-title">{repository || 'Toda la actividad'}</h3>
+                <span role="status" className="count">
+                  {filtered.length} de {scope.length} {scope.length === 1 ? 'evento' : 'eventos'}
+                </span>
+              </div>
+              <div className="type-control">
+                <label htmlFor="event-type">Tipo de evento</label>
+                <select id="event-type" value={type} onChange={event => setType(event.target.value)}>
+                  <option value="">Todos los tipos</option>
+                  {types.map(kind => <option key={kind} value={kind}>{eventLabel(kind)}</option>)}
+                </select>
+              </div>
+            </div>
+            <Timeline events={filtered} />
+          </section>
+        </div>
+      )}
     </section>
   )
 }
